@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='githubactiontesting',
-    version='0.0.4',
+    version='0.0.5',
     packages=find_packages('githubactiontesting', exclude=['test']),
     url='https://github.com/dievalcorentin/Githubaction_test',
     license='',
