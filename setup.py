@@ -1,9 +1,9 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='Githubaction_test',
-    version='0.0.3',
-    packages=find_packages('', exclude=['test']),
+    name='githubactiontesting',
+    version='0.0.4',
+    packages=find_packages('githubactiontesting', exclude=['test']),
     url='https://github.com/dievalcorentin/Githubaction_test',
     license='',
     author='Corentin Dieval',
