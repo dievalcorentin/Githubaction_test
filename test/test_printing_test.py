@@ -1,6 +1,6 @@
 import pytest
 
-from printing_test import hello_world
+import printing_test
 
 
 @pytest.mark.parametrize(
@@ -12,4 +12,4 @@ from printing_test import hello_world
     ]
 )
 def test_hello_world(text, expected):
-    assert hello_world(text) == expected
+    assert printing_test.hello_world(text) == expected
