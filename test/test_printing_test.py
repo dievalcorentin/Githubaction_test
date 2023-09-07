@@ -1,6 +1,6 @@
 import pytest
 
-import printing_test
+from githubactiontesting import printing_test
 
 
 @pytest.mark.parametrize(
