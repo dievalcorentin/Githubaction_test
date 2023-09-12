@@ -50,6 +50,15 @@ jobs:
         # Use always() to always run this step to publish test results when there are test failures
         if: ${{ always() }}
 
+      - name: Run MyPy
+        run: mypy your_module_or_directory | tee mypy.txt
+
+      - name: Archive MyPy output
+        uses: actions/upload-artifact@v3
+        with:
+          name: mypy-output
+          path: mypy.txt
+
       - name: Build package
         run: |
           pip install wheel
