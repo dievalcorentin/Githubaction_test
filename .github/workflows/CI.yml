@@ -51,7 +51,9 @@ jobs:
         if: ${{ always() }}
 
       - name: Run MyPy
-        run: mypy your_module_or_directory | tee mypy.txt
+        run: |
+          pip install mypy
+          mypy your_module_or_directory | tee mypy.txt
 
       - name: Archive MyPy output
         uses: actions/upload-artifact@v3
