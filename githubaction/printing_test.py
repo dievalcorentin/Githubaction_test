@@ -1,5 +1,7 @@
 """Printing test module"""
 
+from datetime import datetime
+
 
 def hello_world(text: str) -> str:
     """
@@ -11,3 +13,11 @@ def hello_world(text: str) -> str:
     if text:
         return f'Hello world, {text}'
     return 'Hello world, welcome to Python test'
+
+
+date = datetime.now()
+print(date)
+print(type(date))
+
+print("Nous sommes le:", datetime.now())
+print(f"Nous sommes le: {datetime.now()}")

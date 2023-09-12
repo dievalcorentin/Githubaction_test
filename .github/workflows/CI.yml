@@ -40,7 +40,8 @@ jobs:
         continue-on-error: true
 
       - name: Test with pytest
-        run: pytest tests.py --doctest-modules --junitxml=junit/test-results-${{ matrix.python-version }}.xml
+        run: |
+          pytest
       - name: Upload pytest test results
         uses: actions/upload-artifact@v3
         with:
