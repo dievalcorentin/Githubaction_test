@@ -1,0 +1,31 @@
+name: Build Pipeline
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Build package
+        run: |
+          pip install wheel
+          pip install --upgrade setuptools
+          python setup.py sdist bdist_wheel
+
+      - name: Archive Package
+        uses: actions/upload-artifact@v3
+        with:
+          name: python-package
+          path: dist/
+
+#      - name: Publish package to Nexus
+#        run: |
+#          python -m pip install twine
+#          twine upload --repository-url [URL_de_votre_repo_Nexus] -u [votre_nom_utilisateur] -p [votre_mot_de_passe] dist/*
+#        env:
+#          TWINE_USERNAME: ${{ secrets.NEXUS_USERNAME }}  # Créez un secret contenant votre nom d'utilisateur Nexus
+#          TWINE_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}  # Créez un secret contenant votre mot de passe Nexus
