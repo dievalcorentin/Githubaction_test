@@ -27,7 +27,7 @@ jobs:
         run: |
           pip install pylint
           pylint $(git ls-files '*.py') |
-          tee pylint.txt
+          tee reports/pylint.txt
       - name: Upload pylint.txt as artifact
         uses: actions/upload-artifact@v3
         with:
@@ -41,7 +41,7 @@ jobs:
         continue-on-error: true
 
       - name: Test with pytest
-        run: pytest --junitxml=pytest_report.xml
+        run: pytest --junitxml=reports/pytest_report.xml
         continue-on-error: true
 
       - name: Upload pytest test results
@@ -55,7 +55,7 @@ jobs:
       - name: Run MyPy
         run: |
           pip install mypy
-          mypy . | tee mypy.txt
+          mypy . | tee reports/mypy.txt
 
       - name: Archive MyPy output
         uses: actions/upload-artifact@v3
