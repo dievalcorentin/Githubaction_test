@@ -51,7 +51,10 @@ jobs:
         if: ${{ always() }}
 
       - name: Build package
-        run: python3 setup.py sdist bdist_wheel
+        run: |
+          pip install wheel
+          pip install --upgrade setuptools
+          python setup.py sdist bdist_wheel
 
 #      - name: Publish package to Nexus
 #        run: |
