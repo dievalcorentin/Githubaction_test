@@ -53,7 +53,7 @@ jobs:
       - name: Run MyPy
         run: |
           pip install mypy
-          mypy your_module_or_directory | tee mypy.txt
+          mypy . | tee mypy.txt
 
       - name: Archive MyPy output
         uses: actions/upload-artifact@v3
