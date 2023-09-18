@@ -3,8 +3,6 @@
 	README.md,8/e/8ec9a00bfd09b3190ac6b22251dbb1aa95a0579d
 @
 requirements.txt,1/9/19359a61ae2446b51b549167b014da2fcf265768
-T
-$githubactiontesting/printing_test.py,9/e/9ec9c869ed6efcce89047c14f3da9098988e928d
 J
 test/test_printing_test.py,b/e/bee2f5294bf471b2ea4b686e12ac2e2481f59ce1
 M
