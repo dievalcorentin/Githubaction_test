@@ -54,10 +54,10 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
       - name: Test with pytest
-        run: |
-          pip install pytest
-          python -m pytest test/ --junitxml=pytest_report.xml
+        run: python -m pytest test/ --junitxml=pytest_report.xml
 
       - name: Upload pytest test results
         uses: actions/upload-artifact@v3
