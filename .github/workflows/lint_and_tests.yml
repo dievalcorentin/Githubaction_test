@@ -72,6 +72,7 @@ jobs:
               fi
       
               # Use regex to extract content inside brackets at the end of the message
+              message=$(echo "$message" | cut -d ' ' -f 2-)
               if [[ $message =~ \[([^]]+)\]$ ]]; then
                 bracket_content="${BASH_REMATCH[1]}"
                 # Remove prefix error & content inside brackets from the message
