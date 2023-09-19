@@ -49,7 +49,7 @@ jobs:
         run: |
           # Read the contents of mypy.txt
           mypy_output=$(cat mypy.txt)
-
+      
           # Split the mypy output into lines and process each line
           IFS=$'\n'
           for line in $mypy_output; do
@@ -58,8 +58,9 @@ jobs:
               # Extract file, line, and message content
               file=$(echo "$line" | cut -d ':' -f 1)
               line_number=$(echo "$line" | cut -d ':' -f 2)
+              message_prefix=$(echo "$line" | grep -oE "error:|note:|warning:")
               message=$(echo "$line" | cut -d ':' -f 3-)
-
+      
               # Determine the annotation type (error, note, or warning)
               annotation_type=""
               if [[ $line == *"error:"* ]]; then
@@ -69,17 +70,17 @@ jobs:
               elif [[ $line == *"warning:"* ]]; then
                 annotation_type="warning"
               fi
-
+      
               # Use regex to extract content inside brackets at the end of the message
               if [[ $message =~ \[([^]]+)\]$ ]]; then
                 bracket_content="${BASH_REMATCH[1]}"
                 # Remove content inside brackets from the message
                 message=$(echo "$message" | sed 's/\['"$bracket_content"'\]$//')
                 # Create GitHub annotation with the custom format
-                echo "::${annotation_type} file=${file},line=${line_number},title=MYPY [${bracket_content}]::${message}"
+                echo "::${annotation_type} file=${file},line=${line_number},title=MYPY [${bracket_content}]::${message_prefix} ${message}"
               else
                 # Create GitHub annotation without content inside brackets in the title
-                echo "::${annotation_type} file=${file},line=${line_number},title=MYPY ::${message}"
+                echo "::${annotation_type} file=${file},line=${line_number},title=MYPY ::${message_prefix} ${message}"
               fi
             fi
           done
