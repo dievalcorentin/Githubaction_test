@@ -45,7 +45,7 @@ jobs:
           pip install mypy
           mypy . | tee mypy.txt
 
-      - name: Create annotations for MyPy errors, warnings, and notes from file
+      - name: MyPy Annotations
         run: |
           # Read the contents of mypy.txt
           mypy_output=$(cat mypy.txt)
