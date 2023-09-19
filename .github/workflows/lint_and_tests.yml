@@ -74,7 +74,7 @@ jobs:
               echo "::${annotation_type} file=$file,line=$line_number::MYPY - ${message_content}"
             fi
           done
-          continue-on-error: true
+        continue-on-error: true
 
       - name: Archive MyPy output
         uses: actions/upload-artifact@v3
