@@ -70,14 +70,15 @@ jobs:
                 annotation_type="warning"
               fi
 
-              # Check if the message ends with [error_type]
-              if [[ $message == *" [error_type]" ]]; then
-                # Remove [error_type] from the message
-                message=$(echo "$message" | sed 's/\[error_type\]//')
+              # Use regex to extract content inside brackets at the end of the message
+              if [[ $message =~ \[([^]]+)\]$ ]]; then
+                bracket_content="${BASH_REMATCH[1]}"
+                # Remove content inside brackets from the message
+                message=$(echo "$message" | sed 's/\['"$bracket_content"'\]$//')
                 # Create GitHub annotation with the custom format
-                echo "::${annotation_type} file=${file},line=${line_number},title=MYPY [error_type]::${message}"
+                echo "::${annotation_type} file=${file},line=${line_number},title=MYPY [${bracket_content}]::${message}"
               else
-                # Create GitHub annotation without [error_type] in the title
+                # Create GitHub annotation without content inside brackets in the title
                 echo "::${annotation_type} file=${file},line=${line_number},title=MYPY ::${message}"
               fi
             fi
