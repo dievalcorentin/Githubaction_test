@@ -69,11 +69,12 @@ jobs:
               elif [[ $line == *"warning:"* ]]; then
                 annotation_type="warning"
               fi
-              # Create GitHub annotation with "MYPY" in the title and message content
-              echo "::${annotation_type} file=$file,line=$line_number::MYPY - ${message_content}"
+          
+              # Create GitHub annotation with the custom format
+              echo "::${annotation_type} file=${file},line=${line_number},title=MYPY ${annotation_type}::${message_content}"
             fi
           done
-        continue-on-error: true
+          continue-on-error: true
 
       - name: Archive MyPy output
         uses: actions/upload-artifact@v3
