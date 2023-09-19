@@ -46,7 +46,6 @@ jobs:
           mypy . | tee mypy.txt
 
       - name: Create annotations for MyPy errors from file
-        if: ${{ failure() }}
         run: |
           # Read the contents of mypy.txt
           mypy_output=$(cat mypy.txt)
