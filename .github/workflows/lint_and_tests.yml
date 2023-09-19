@@ -50,8 +50,11 @@ jobs:
           name: MyPy Analysis
           path: mypy.txt
 
-      - name: Create annotation for build error
-        run: echo "::error file=app.js,line=1::Missing semicolon"
+      - name: Create annotations for MyPy errors
+        if: ${{ failure() }}
+        run: |
+          mypy your_code_directory --json | jq -c '.items[] | select(.severity == "error") | "::error file=" + .location.file + ",line=" + (.location.line | tostring) + "::$" + .message'
+        continue-on-error: true
 
 
   test:
