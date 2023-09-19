@@ -45,25 +45,36 @@ jobs:
           pip install mypy
           mypy . | tee mypy.txt
 
-      - name: Create annotations for MyPy errors from file
+      - name: Create annotations for MyPy errors, warnings, and notes from file
         run: |
           # Read the contents of mypy.txt
           mypy_output=$(cat mypy.txt)
-
-          # Parse the mypy output and create GitHub annotations
-          while IFS= read -r line; do
-            # Check if the line contains an error message
-            if [[ $line == *error:* ]]; then
-              # Extract file, line, and error message
+          
+          # Split the mypy output into lines and process each line
+          IFS=$'\n'
+          for line in $mypy_output; do
+            # Check if the line contains an error, note, or warning message
+            if [[ $line == *"error:"* || $line == *"note:"* || $line == *"warning:"* ]]; then
+              # Extract file, line, and message content
               file=$(echo "$line" | cut -d ':' -f 1)
               line_number=$(echo "$line" | cut -d ':' -f 2)
-              error_message=$(echo "$line" | cut -d ':' -f 3-)
-
-              # Create GitHub annotation
-              echo "::error file=$file,line=$line_number::$error_message"
+              message_content=$(echo "$line" | cut -d ':' -f 3-)
+          
+              # Determine the annotation type (error, note, or warning)
+              annotation_type=""
+              if [[ $line == *"error:"* ]]; then
+                annotation_type="error"
+              elif [[ $line == *"note:"* ]]; then
+                annotation_type="notice"
+              elif [[ $line == *"warning:"* ]]; then
+                annotation_type="warning"
+              fi
+          
+              # Create GitHub annotation with "MYPY" in the title and message content
+              echo "::${annotation_type} file=$file,line=$line_number::MYPY - ${message_content}"
             fi
-          done <<< "$mypy_output"
-        continue-on-error: true
+          done
+          continue-on-error: true
 
       - name: Archive MyPy output
         uses: actions/upload-artifact@v3
