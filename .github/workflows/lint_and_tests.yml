@@ -53,7 +53,7 @@ jobs:
       - name: Create annotations for MyPy errors
         if: ${{ failure() }}
         run: |
-          mypy your_code_directory --json | jq -c '.items[] | select(.severity == "error") | "::error file=" + .location.file + ",line=" + (.location.line | tostring) + "::$" + .message'
+          mypy . --json | jq -c '.items[] | select(.severity == "error") | "::error file=" + .location.file + ",line=" + (.location.line | tostring) + "::$" + .message'
         continue-on-error: true
 
 
