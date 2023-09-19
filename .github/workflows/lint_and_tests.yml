@@ -77,14 +77,15 @@ jobs:
                 # Remove prefix error & content inside brackets from the message
                 message=$(echo "$message" | sed 's/\['"$message_prefix"'\]$//' | sed 's/\['"$bracket_content"'\]$//')
                 # Create GitHub annotation with the custom format
-                echo "::${annotation_type} file=${file},line=${line_number},title=MYPY [${bracket_content}]::${message_prefix} ${message}"
+                echo "::${annotation_type} file=${file},line=${line_number},title=MYPY [${bracket_content}]::${message}"
               else
-                # Create GitHub annotation without content inside brackets in the title
-                echo "::${annotation_type} file=${file},line=${line_number},title=MYPY ::${message_prefix} ${message}"
+                # Create GitHub annotation with the custom format, keeping the message prefix in the title
+                echo "::${annotation_type} file=${file},line=${line_number},title=MYPY [${message_prefix}]::${message}"
               fi
             fi
           done
         continue-on-error: true
+
 
       - name: Archive MyPy output
         uses: actions/upload-artifact@v3
