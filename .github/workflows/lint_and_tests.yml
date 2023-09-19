@@ -69,7 +69,6 @@ jobs:
               elif [[ $line == *"warning:"* ]]; then
                 annotation_type="warning"
               fi
-          
               # Create GitHub annotation with "MYPY" in the title and message content
               echo "::${annotation_type} file=$file,line=$line_number::MYPY - ${message_content}"
             fi
