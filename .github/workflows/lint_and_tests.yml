@@ -74,8 +74,8 @@ jobs:
               # Use regex to extract content inside brackets at the end of the message
               if [[ $message =~ \[([^]]+)\]$ ]]; then
                 bracket_content="${BASH_REMATCH[1]}"
-                # Remove content inside brackets from the message
-                message=$(echo "$message" | sed 's/\['"$bracket_content"'\]$//')
+                # Remove prefix error & content inside brackets from the message
+                message=$(echo "$message" | sed 's/\['"$message_prefix"'\]$//' | sed 's/\['"$bracket_content"'\]$//')
                 # Create GitHub annotation with the custom format
                 echo "::${annotation_type} file=${file},line=${line_number},title=MYPY [${bracket_content}]::${message_prefix} ${message}"
               else
