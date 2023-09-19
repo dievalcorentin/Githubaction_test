@@ -58,8 +58,8 @@ jobs:
               # Extract file, line, and message content
               file=$(echo "$line" | cut -d ':' -f 1)
               line_number=$(echo "$line" | cut -d ':' -f 2)
-              message_prefix=$(echo "$line" | grep -oE "error:|note:|warning:")
-              message=$(echo "$line" | cut -d ':' -f 3-)
+              message_prefix=$(echo "$line" | cut -d ':' -f 3 | cut -d ' ' -f 2)
+              message=$(echo "$line" | cut -d ':' -f 4-)
       
               # Determine the annotation type (error, note, or warning)
               annotation_type=""
@@ -72,11 +72,10 @@ jobs:
               fi
       
               # Use regex to extract content inside brackets at the end of the message
-              message=$(echo "$message" | cut -d ' ' -f 2-)
               if [[ $message =~ \[([^]]+)\]$ ]]; then
                 bracket_content="${BASH_REMATCH[1]}"
                 # Remove prefix error & content inside brackets from the message
-                message=$(echo "$message" | sed 's/\['"$message_prefix"'\]$//' | sed 's/\['"$bracket_content"'\]$//')
+                message=$(echo "$message" | sed 's/\['"$bracket_content"'\]$//')
                 # Create GitHub annotation with the custom format
                 echo "::${annotation_type} file=${file},line=${line_number},title=MYPY [${bracket_content}]::${message}"
               else
