@@ -44,17 +44,20 @@ jobs:
         run: |
           pip install mypy
           mypy . | tee mypy.txt
-      - name: Archive MyPy output
-        uses: actions/upload-artifact@v3
-        with:
-          name: MyPy Analysis
-          path: mypy.txt
 
       - name: Create annotations for MyPy errors
         if: ${{ failure() }}
         run: |
           mypy . --json | jq -c '.items[] | select(.severity == "error") | "::error file=" + .location.file + ",line=" + (.location.line | tostring) + "::$" + .message'
         continue-on-error: true
+
+      - name: Archive MyPy output
+        uses: actions/upload-artifact@v3
+        with:
+          name: MyPy Analysis
+          path: mypy.txt
+
+
 
 
   test:
