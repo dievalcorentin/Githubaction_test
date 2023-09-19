@@ -23,22 +23,22 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-#      - name: Analysing the code with pylint
-#        run: |
-#          pip install pylint
-#          pylint $(git ls-files '*.py') |
-#          tee pylint.txt
-#      - name: Upload pylint.txt as artifact
-#        uses: actions/upload-artifact@v3
-#        with:
-#          name: Pylint Analysis
-#          path: pylint.txt
-#
-#      - name: Lint with Ruff
-#        run: |
-#          pip install ruff
-#          ruff --format=github --target-version=py37 .
-#        continue-on-error: true
+      - name: Analysing the code with pylint
+        run: |
+          pip install pylint
+          pylint $(git ls-files '*.py') |
+          tee pylint.txt
+      - name: Upload pylint.txt as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: Pylint Analysis
+          path: pylint.txt
+
+      - name: Lint with Ruff
+        run: |
+          pip install ruff
+          ruff --format=github --target-version=py37 .
+        continue-on-error: true
 
       - name: Run MyPy
         run: |
@@ -70,9 +70,6 @@ jobs:
         with:
           name: MyPy Analysis
           path: mypy.txt
-
-
-
 
   test:
     runs-on: ubuntu-latest
