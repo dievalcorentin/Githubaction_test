@@ -49,7 +49,7 @@ jobs:
         run: |
           # Read the contents of mypy.txt
           mypy_output=$(cat mypy.txt)
-          
+
           # Split the mypy output into lines and process each line
           IFS=$'\n'
           for line in $mypy_output; do
@@ -58,8 +58,8 @@ jobs:
               # Extract file, line, and message content
               file=$(echo "$line" | cut -d ':' -f 1)
               line_number=$(echo "$line" | cut -d ':' -f 2)
-              message_content=$(echo "$line" | cut -d ':' -f 3-)
-          
+              message=$(echo "$line" | cut -d ':' -f 3-)
+
               # Determine the annotation type (error, note, or warning)
               annotation_type=""
               if [[ $line == *"error:"* ]]; then
@@ -69,9 +69,17 @@ jobs:
               elif [[ $line == *"warning:"* ]]; then
                 annotation_type="warning"
               fi
-          
-              # Create GitHub annotation with the custom format
-              echo "::${annotation_type} file=${file},line=${line_number},title=MYPY ${annotation_type}::${message_content}"
+
+              # Check if the message ends with [error_type]
+              if [[ $message == *" [error_type]" ]]; then
+                # Remove [error_type] from the message
+                message=$(echo "$message" | sed 's/\[error_type\]//')
+                # Create GitHub annotation with the custom format
+                echo "::${annotation_type} file=${file},line=${line_number},title=MYPY [error_type]::${message}"
+              else
+                # Create GitHub annotation without [error_type] in the title
+                echo "::${annotation_type} file=${file},line=${line_number},title=MYPY ::${message}"
+              fi
             fi
           done
         continue-on-error: true
