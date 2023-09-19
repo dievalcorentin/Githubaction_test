@@ -45,25 +45,25 @@ jobs:
           pip install mypy
           mypy . | tee mypy.txt
 
-#      - name: Create annotations for MyPy errors from file
-#        run: |
-#          # Read the contents of mypy.txt
-#          mypy_output=$(cat mypy.txt)
-#
-#          # Parse the mypy output and create GitHub annotations
-#          while IFS= read -r line; do
-#            # Check if the line contains an error message
-#            if [[ $line == *error:* ]]; then
-#              # Extract file, line, and error message
-#              file=$(echo "$line" | cut -d ':' -f 1)
-#              line_number=$(echo "$line" | cut -d ':' -f 2)
-#              error_message=$(echo "$line" | cut -d ':' -f 3-)
-#
-#              # Create GitHub annotation
-#              echo "::error file=$file,line=$line_number::$error_message"
-#            fi
-#          done <<< "$mypy_output"
-#        continue-on-error: true
+      - name: Create annotations for MyPy errors from file
+        run: |
+          # Read the contents of mypy.txt
+          mypy_output=$(cat mypy.txt)
+
+          # Parse the mypy output and create GitHub annotations
+          while IFS= read -r line; do
+            # Check if the line contains an error message
+            if [[ $line == *error:* ]]; then
+              # Extract file, line, and error message
+              file=$(echo "$line" | cut -d ':' -f 1)
+              line_number=$(echo "$line" | cut -d ':' -f 2)
+              error_message=$(echo "$line" | cut -d ':' -f 3-)
+
+              # Create GitHub annotation
+              echo "::error file=$file,line=$line_number::$error_message"
+            fi
+          done <<< "$mypy_output"
+        continue-on-error: true
 
       - name: Archive MyPy output
         uses: actions/upload-artifact@v3
