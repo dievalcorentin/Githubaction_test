@@ -76,11 +76,12 @@ jobs:
                 bracket_content="${BASH_REMATCH[1]}"
                 # Remove prefix error & content inside brackets from the message
                 message=$(echo "$message" | sed 's/\['"$message_prefix"'\]$//' | sed 's/\['"$bracket_content"'\]$//')
+                message=$(echo "message" | cut -d ' ' -f 2-)
                 # Create GitHub annotation with the custom format
                 echo "::${annotation_type} file=${file},line=${line_number},title=MYPY [${bracket_content}]::${message}"
               else
                 # Create GitHub annotation with the custom format, keeping the message prefix in the title
-                echo "::${annotation_type} file=${file},line=${line_number},title=MYPY [${message_prefix}]::${message}"
+                echo "::${annotation_type} file=${file},line=${line_number},title=MYPY ::${message}"
               fi
             fi
           done
